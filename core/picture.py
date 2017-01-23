@@ -121,6 +121,8 @@ class Picture:
                 self._readable_size_after = self.readable_size(self._size_after)
                 self._situation = "Changed file!"
                 self._condition = "Archive was in favorable conditions"
+                im_res.close()
+        self.im.close()
         return {self._situation: self._condition}
 
     def change_report(self):
