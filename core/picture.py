@@ -32,6 +32,8 @@ class Picture:
             self._situation, self._condition = None, None
         else:
             self.file = None
+            self._situation = "It will not change"
+            self._condition = "Not a file"
 
     @property
     def size_before(self):
@@ -119,6 +121,7 @@ class Picture:
                 self._readable_size_after = self.readable_size(self._size_after)
                 self._situation = "Changed file!"
                 self._condition = "Archive was in favorable conditions"
+        return {self._situation: self._condition}
 
     def change_report(self):
         if self.file:
