@@ -12,7 +12,7 @@ class Picture:
             self._readable_size_after = None
             
             self.im = Image.open(full_file_path()) # Open image object to get dimensions of file
-            self._width_before, self._height_before = im.size
+            self._width_before, self._height_before = self.im.size
             self._width_after, self._height_after = None, None
 
             self._new_directory = new_directory
@@ -71,3 +71,38 @@ class Picture:
                 return "{:3.1f}{}".format(num, x)
             num /= 1024.0
         return "{:3.1f}TB".format(num)
+
+    def resize_picture(self):
+        if new_directory:
+            os.mkdir("{}{}resized".format(self.path, os.path.sep))
+
+        if self._width_before < 1920 and self._height_before < 1080:
+            self._situation = "It will not change"
+            self._condition = "Dimensions below standard (Full HD)"
+        elif self._width_before == 1920 or self._height_before == 1080:
+            self._situation = "It will not change"
+            self._condition = "Dimensions are already standardized"
+        else:
+            d = Dimensions(self._width_before, self._height_before)
+
+            if (self._width_before - 1920) > (self._height_before - 1080):
+                self.im = self.im.resize((d.new_width(), 1080))
+            else:
+                self.im = self.im.resize((1920, d.new_height()))
+
+            self.im.save(full_file_path_resized())
+
+            self._width_after, self._height_before = self.im.size
+
+
+class Dimension:
+
+    def __init__(self, width, height):
+        self._width = width
+        self._height = height
+
+    def new_height(self):
+        return int((self._height / self._width) * 1920)
+
+    def new_width(self):
+        return int((self._width / self._height) * 1080)
