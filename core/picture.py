@@ -114,6 +114,7 @@ class Picture:
                     self.im = self.im.resize((1920, d.new_height()))
 
                 self.im.save(self.full_file_path_resized())
+                self.im.close()
 
                 im_res = Image.open(self.full_file_path_resized())
                 self._width_after, self._height_before = im_res.size
@@ -122,7 +123,6 @@ class Picture:
                 self._situation = "Changed file!"
                 self._condition = "Archive was in favorable conditions"
                 im_res.close()
-        self.im.close()
         return {self._situation: self._condition}
 
     def change_report(self):
