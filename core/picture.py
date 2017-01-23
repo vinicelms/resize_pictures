@@ -52,3 +52,22 @@ class Picture:
     @property
     def height_after(self):
         return self._height_after
+
+    def image_size(self):
+        return os.stat(full_file_path()).st_size
+
+    def full_file_path(self):
+        return "{}{}{}{}".format(self.path, os.path.sep, self.file, self.extension)
+
+    def full_file_path_resized(self):
+        if not self._new_directory:
+            return "{}{}{}_resized{}".format(self.path, os.path.sep, self.file, self.extension)
+        else:
+            return "{}{}{}{}{}_resized{}".format(self.path, os.path.sep, self._new_directory, os.path.sep self.file, self.extension)
+
+    def readable_size(self, num):
+        for x in ['bytes','KB','MB','GB']:
+            if num < 1024.0:
+                return "{:3.1f}{}".format(num, x)
+            num /= 1024.0
+        return "{:3.1f}TB".format(num)
